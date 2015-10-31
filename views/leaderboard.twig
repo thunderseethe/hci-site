@@ -1,0 +1,61 @@
+{% extends 'base.twig' %}
+
+{% block css %}
+<style type="text/css">
+.flex-row {
+	display: flex;
+	flex-flow:row nowrap;
+}
+.flex-col {
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+.justify-start {
+	justifiy-content:flex-start;
+}
+.justify-between {
+	justify-content:space-between;
+}
+.justify-center {
+	justify-content: center;
+}
+
+.align-center {
+	align-items:center;
+}
+.align-start{
+	align-items:flex-start;
+}
+
+.avatar {
+	font-size:50px;
+	padding-right:5px;
+}
+.collection{
+	margin-top:0px;
+	margin-bottom:0px;
+}
+.rank{
+	font-weight:bold;
+	font-size:16px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<ul class="collection">
+	{% for row in rows %}
+		<li class="collection-item {{row.name == user ? "active" : ""}} flex-row justify-between align-center">
+			<div class="flex-row justify-start align-center">
+				<i class="avatar material-icons">&#xE7FD;</i>
+				<div class="flex-col justify-center align-start">
+					<span class="name">{{row.name}}</span>
+					<span class="score">Score: {{row.score}}</span>
+				</div>
+			</div>
+			<span class="rank">{{loop.index}}</span>
+		</li>
+	{% endfor %}
+</ul>
+{% endblock %}
