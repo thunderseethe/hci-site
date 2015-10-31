@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{page|default("Page Name")}}</title>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+		<style type="text/css">
+			.brand-logo{
+				margin: 12px 0px;
+			}
+		</style>
+		{% block css %}{% endblock %}
+	</head>
+
+	<body class="grey lighten-4">
+		<header>
+			<div class="navbar-fixed">
+				<nav>
+					<a href="#" data-activates="nav-mobile" class="button-collapse">
+						<i class="mdi-navigation-menu"></i>
+					</a>
+					<h2 class="brand-logo">{{page|default("Page Name")}}</h2>
+					<ul id="nav-mobile" class="side-nav">
+						<li><a href="index.php">Main</a></li>
+						<li><a href="">Timetable</a></li>
+						<li><a href="">Leaderboard</a></li>
+						<li><a href="">Goals</a></li>
+						<li><a href="">Stats</a></li>
+						<li><a href="">Settings</a></li>
+					</ul>
+				</nav>
+			</div>
+			
+		</header>
+		<main id="content" >
+			{% block content %}{% endblock %}
+		</main>
+		{% block fab %}{% endblock %}
+
+		<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+		<script type="text/javascript">
+			$(".button-collapse").sideNav();
+		</script>
+		{% block js %}{% endblock %}
+	</body>
+</html>

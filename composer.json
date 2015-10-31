@@ -1,0 +1,13 @@
+{
+    "name": "thunderseethe/hci-site",
+    "description": "A simple site for our hci course",
+    "require": {
+        "twig/twig": "^1.23"
+    },
+    "authors": [
+        {
+            "name": "Ethan Smith",
+            "email": "emsmith1995@gmail.com"
+        }
+    ]
+}
