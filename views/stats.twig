@@ -1,0 +1,79 @@
+{% extends 'base.twig' %}
+
+{% block css %}
+<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+<style type="text/css">
+	#chart {
+		width: 100%;
+		color: black;
+	}
+	.card-title .badge{
+		margin-top:5px;
+	}
+	#chart .ct-label{
+		fill: black;
+		font-size: 1rem;
+	}
+	.collection {
+		border:none;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title black-text">Weekly Goal</span>
+				<div id="chart" class="ct-square black-text"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title black-text">
+					<span>BMI: {{bmi}}</span>
+					<span class="badge black-text">
+						{% for rate in rating %}
+							<i class="material-icons">{{rate?"star":"star_border"}}</i> 
+						{% endfor %}
+					</span>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title black-text">Leaderboard Position</span>
+				<ul class="collection">
+					<li class="collection-item">This Week <span class="badge black-text">{{position}}</span></li>
+					<li class="collection-item">Last Week <span class="badge black-text">{{last_position}}</span></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+<script type="text/javascript">
+	console.log({{data|raw}});
+	new Chartist.Pie('#chart',
+		{{data|raw}},
+		{
+			donut: true,
+			//donutWidth: 20,
+			startAngle: 0,
+			total: 100,
+			//width: $("#chart").width(),
+			chartPadding:30,
+		}
+	);
+</script>
+{% endblock %}
