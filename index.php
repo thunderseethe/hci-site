@@ -26,11 +26,20 @@ function action($name, $link){
 	);
 }
 
+function navitem($text, $icon="", $link="#!"){
+	return array(
+		"link"=>$link,
+		"text"=>$text,
+		"icon"=>$icon
+	);
+}
+
 echo $twig->render('index.twig', array(
 	'page'=>'Today',
-    
     'button' => 'I am active!',
-    
+    'right_nav' => array(
+    	navitem("Add", "add")
+    ),
 	'events' => array(
 		event("Event Here", "0:00", "#!"),
 		event("Event Here", "1:00", "#!"),

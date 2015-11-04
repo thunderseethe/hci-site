@@ -11,6 +11,12 @@
 			.brand-logo{
 				margin: 12px 0px;
 			}
+			.nav-item span{
+				font-size:20px;
+			}
+			.nav-item i{
+				margin-right:10px;
+			}
 		</style>
 		{% block css %}{% endblock %}
 	</head>
@@ -19,18 +25,34 @@
 		<header>
 			<div class="navbar-fixed">
 				<nav>
-					<a href="#" data-activates="nav-mobile" class="button-collapse">
-						<i class="mdi-navigation-menu"></i>
-					</a>
-					<h2 class="brand-logo">{{page|default("Page Name")}}</h2>
-					<ul id="nav-mobile" class="side-nav">
-						<li><a href="index.php">Main</a></li>
-						<li><a href="timetable.php">Timetable</a></li>
-						<li><a href="leaderboard.php">Leaderboard</a></li>
-						<li><a href="">Goals</a></li>
-						<li><a href="stats.php">Stats</a></li>
-						<li><a href="">Settings</a></li>
-					</ul>
+					<div class="nav-wrapper">
+						<a href="#" data-activates="nav-mobile" class="button-collapse">
+							<i class="mdi-navigation-menu"></i>
+						</a>
+						<ul id="nav-mobile" class="side-nav">
+							<li><a href="index.php">Main</a></li>
+							<li><a href="timetable.php">Timetable</a></li>
+							<li><a href="leaderboard.php">Leaderboard</a></li>
+							<li><a href="">Goals</a></li>
+							<li><a href="stats.php">Stats</a></li>
+							<li><a href="">Settings</a></li>
+						</ul>
+						<h2 class="brand-logo center">{{page|default("Page Name")}}</h2>
+						{% if right_nav %}
+						<ul class="right">
+							{% for item in right_nav %}
+							<li>
+								<a href="{{item.link}}" class="nav-item">
+									{% if not item.icon is empty %}
+									<i class="material-icons left">{{item.icon}}</i>
+									{% endif %}
+									<span>{{item.text}}</span>
+								</a>
+							</li>
+							{% endfor %}
+						</ul>
+						{% endif %}
+					</div>
 				</nav>
 			</div>
 			
