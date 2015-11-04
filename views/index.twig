@@ -6,10 +6,37 @@
 		border:none;
 		margin-bottom:0px;
 	}
+    
+    a.link-button{
+        display:inline-block;
+        vertical-align: middle;
+        font-size: 2em;
+        margin-top:0;
+        margin-bottom:0;
+    }        
+    
+    .put-to-mid{
+        display:block; 
+        text-align: center;        
+    }
 </style>
 {% endblock %}
 
 {% block content %}
+<div class="row">
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">				
+				<div class="collection put-to-mid">         
+                    <a href="./" class="link-button black-text">
+                        <span>{{button}}</span>
+                    </a>              
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
 	<div class="col s12">
 		<div class="card">

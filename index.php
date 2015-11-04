@@ -28,6 +28,9 @@ function action($name, $link){
 
 echo $twig->render('index.twig', array(
 	'page'=>'Today',
+    
+    'button' => 'I am active!',
+    
 	'events' => array(
 		event("Event Here", "0:00", "#!"),
 		event("Event Here", "1:00", "#!"),
