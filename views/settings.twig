@@ -1,0 +1,164 @@
+{% extends 'base.twig' %}
+
+{% block css %}
+<link href="style/flex.css" rel="stylesheet" />
+<style type="text/css">
+#goals .delete {
+	height:58px;
+}
+#goals .delete, #new-goal {
+	cursor:pointer;
+}
+.right{
+	text-align: right;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title black-text">Goals</span>
+				<form id="goals">
+					<!-- javascript magic happens here: render_goals() -->
+				</form>
+				<span id="new-goal" class="flex-row justify-start align-center"><i class="material-icons">add</i> New Goal</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content row">
+				<span class="card-title black-text col s12">Smart Watch:
+					{% if connected %}
+						<span class="green-text lighten-3">Connected</span>
+					{% else %}
+						<span class="red-text lighten-3">Not Connected</span>
+					{% endif %}
+				</span>
+				<span class="col s12">
+					<a class="waves-effect waves-light btn green lighten-1">Connect</a>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title black-text">Info</span>
+				<form class="row">
+					<span class="col s12 header">Height</span>
+					<div class="input-field col s6">
+						<input type="text" id="feet" value="{{feet}}" />
+						<label for="feet">Feet</label>
+					</div>
+					<div class="input-field col s6">
+						<input type="text" id="inch" value="{{inches}}"/>
+						<label for="inch">Inches</label>
+					</div>
+					<span class="col s12 header">Weight</span>
+					<div class="input-field col s6">
+						<input type="text" id="weight" value="{{weight}}"/>
+						<label for="weight">Weight</label>
+					</div>
+					<div class="input-field col s6">
+						<select id="weight_type">
+							<option value="pounds">Ilbs</option>
+							<option value="kilograms">Kgs</option>
+						</select>
+					</div>
+					<div class="input-field col s12">
+						<input id="track_bmi" type="checkbox" {{track_bmi ? "checked" : ""}}/>
+						<label for="track_bmi">Track BMI</label>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title black-text">Preferences</span>
+				<form class="row">
+					<div class="input-field col s12">
+						<input type="checkbox" id="class_suggestions" {{class_suggestions ? "checked" : ""}} />
+						<label for="class_suggestions">Class Suggestions</label>
+					</div>
+					<div class="input-field col s12">
+						<input type="checkbox" id="leaderboard_names" {{leaderboard_names ? "checked" : ""}} />
+						<label for="leaderboard_names">Show leaderboard names</label>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="js/element.js"></script>
+<script type="text/javascript">
+	var goals = {{goals|json_encode|raw}};
+	var times = {{times|json_encode|raw}};
+
+	function render_goal(times, indx, quantity, metric, interval){
+		times.value = interval;
+		times.setAttribute("id", "interval"+indx);
+		return element("div", {"class":"row"}, [
+			element("div", {"class":"input-field col s3"}, [
+				element("input", {"id":"quant"+indx, "type":"text", "placeholder":"Quantity", "value":quantity}),
+				//element("label", {"for":"quant"+indx}, [document.createTextNode("Quantity")])
+			]),
+			element("div", {"class":"input-field col s4"}, [
+				element("input", {"id":"metric"+indx, "type":"text", "placeholder":"Metric", "value":metric}),
+				//element("label", {"for":"metric"+indx}, [document.createTextNode("Metric")])
+			]),
+			element("div", {"class":"input-field col s4"}, [
+				times,
+				//element("label", {"for":"interval"+indx}, [document.createTextNode("Interval")])
+			]),
+			element("div", {"class":"input-field delete col s1 flex-row justify-center align-center", "data-row":indx}, [
+				element("i", {"class":"material-icons"}, [document.createTextNode("close")])
+			])
+		]);
+	}
+
+	function render_goals(gs, time_opts){
+		var select = element("select", {"class":"interval-select"}, time_opts.map(function(time){
+			return element("option", {"value":time.value}, [document.createTextNode(time.text)])
+		}));
+		var rows = gs.map(function(goal, indx){
+			return render_goal(select.cloneNode(true), indx, goal.quantity, goal.metric, goal.interval);
+		});
+		var form = document.getElementById("goals");
+		while(form.firstChild){
+			form.removeChild(form.firstChild);
+		}
+		for(i in rows){
+			form.appendChild(rows[i]);
+		}
+		$(".interval-select").material_select();
+		$(".delete").on("click", function(event){
+			var target = $(event.currentTarget);
+			goals.splice(target.attr("data-row"), 1);
+			render_goals(goals, times);
+		});
+	}
+
+	$("#weight_type").material_select();
+
+	$("#new-goal").on("click", function(event){
+		goals.push({
+			quantity:"",
+			metric:"",
+			interval:""
+		});
+		render_goals(goals, times);
+	});
+	render_goals(goals, times);
+</script>
+{% endblock %}
