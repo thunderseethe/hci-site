@@ -38,7 +38,7 @@ echo $twig->render('index.twig', array(
 	'page'=>'Today',
     'button' => 'I am active!',
     'right_nav' => array(
-    	navitem("Add", "add")
+    	navitem("Track", "add")
     ),
 	'events' => array(
 		event("Event Here", "0:00", "#!"),
