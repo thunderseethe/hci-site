@@ -36,7 +36,7 @@ function navitem($text, $icon="", $link="#!"){
 
 echo $twig->render('index.twig', array(
 	'page'=>'Today',
-    'button' => 'I am active!',
+
     'right_nav' => array(
     	navitem("Track", "add", "track")
     ),
