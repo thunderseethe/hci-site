@@ -32,17 +32,19 @@
 			<div class="navbar-fixed">
 				<nav>
 					<div class="nav-wrapper">
-						<a href="#" data-activates="nav-mobile" class="button-collapse">
-							<i class="mdi-navigation-menu"></i>
-						</a>
-						<ul id="nav-mobile" class="side-nav">
-							<li><a href="index.php">Main</a></li>
-							<li><a href="timetable.php">Timetable</a></li>
-							<li><a href="leaderboard.php">Leaderboard</a></li>
-							<li><a href="">Goals</a></li>
-							<li><a href="stats.php">Stats</a></li>
-							<li><a href="settings.php">Settings</a></li>
-						</ul>
+						{% block left_nav %}
+							<a href="#" data-activates="nav-mobile" class="button-collapse">
+								<i class="mdi-navigation-menu"></i>
+							</a>
+							<ul id="nav-mobile" class="side-nav">
+								<li><a href="index">Main</a></li>
+								<li><a href="timetable">Timetable</a></li>
+								<li><a href="leaderboard">Leaderboard</a></li>
+								<li><a href="">Goals</a></li>
+								<li><a href="stats">Stats</a></li>
+								<li><a href="settings">Settings</a></li>
+							</ul>
+						{% endblock %}
 						<h2 class="brand-logo center">{{page|default("Page Name")}}</h2>
 						{% if right_nav %}
 						<ul class="right">

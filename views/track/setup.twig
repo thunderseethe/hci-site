@@ -1,0 +1,162 @@
+{% extends 'base.twig' %}
+
+{% block css %}
+<link href="style/flex.css" rel="stylesheet" />
+<style type="text/css">
+.time {
+	font-size:70px;
+}
+ul.left, ul.left li, ul.left li a {
+	height:100%;
+}
+#next-wrapper{
+	margin-bottom: 0px;
+}
+</style>
+{% endblock %}
+
+{% block left_nav %}
+<ul class="left">
+	<li><a href="{{back}}" class="nav-item"><i class="material-icons">arrow_back</i></a></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<form class="row">
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title black-text">Activity</span>
+				<div class="input-field">
+					<select id="search" class="browser-default">
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content row" id="step">
+				<span class="card-title black-text">Quantity</span>
+				<div class="input-field col s12">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content row" id="next-wrapper">
+				<a href="{{next}}" class="col s12 waves-effect waves-light btn-large green lighten-1 white-text">
+					Next
+					<i class="material-icons right">play_arrow</i>
+				</a>
+			</div>
+		</div>
+	</div>
+</form>
+<!--<div id="modal" class="modal">
+	<div class="modal-content">
+		<h4>Modal Header</h4>
+		<p>A bunch of text</p>
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+	</div>
+</div>-->
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="js/element.js"></script>
+<script type="text/javascript">
+	var root_ele = document.getElementById("tracker");
+	var exercises = {{exercises|raw}};
+	//var track = {{track|raw}};
+	//var timer_handle;
+
+	/*var timer_callback = function(){
+		track.time += 1;
+		render_track(root_ele, track);
+		timer_handle = window.setTimeout(timer_callback, 1000);
+	}
+
+	function padLeftZeroes(nr, n){
+		return Array(n-String(nr).length+1).join('0')+nr;
+	}	
+
+	var render_track = function(tracker, data){
+		//remove all children
+		while(tracker.firstChild){
+			tracker.removeChild(tracker.firstChild);
+		}
+
+		tracker.appendChild(element('div', {'class':'col s12 flex-row justify-center align-center time'}, [
+			text(Math.floor(data.time / 60) + ":" + padLeftZeroes(data.time % 60, 2) + " s")
+		]));
+		tracker.appendChild(element('div', {'class':'col s12 flex-row justify-center align-center toggle'}, [
+			data.started ? 
+				element('button', {'id':'stop_btn', 'class':'waves-effect waves-light btn-large red'}, [
+					element('i', {'class':'material-icons right'}, [text("stop")]),
+					text("Stop")
+				])
+			:
+				element('button', {'id':'go_btn', 'class':'waves-effect waves-light btn-large green'}, [
+					element('i', {'class':'material-icons right'}, [text("play_arrow")]),
+					text("Go")
+				])
+		]));
+
+		$("#stop_btn").on('click', function(event){
+			if(timer_handle)
+				window.clearTimeout(timer_handle);
+			data.started = false;
+			render_track(root_ele, data);
+		});
+		$("#go_btn").on('click', function(event){
+			timer_handle = window.setTimeout(timer_callback, 1000);
+			data.started = true;
+			render_track(root_ele, data);
+		});
+	}*/
+
+	var removeChildren = function(ele){
+		while(ele.firstChild){
+			ele.removeChild(ele.firstChild);
+		}
+	}
+
+	var onchange_handler = function(ele, data){
+		return function(event){
+			var steps = data[event.currentTarget.value];
+			removeChildren(ele);
+			ele.appendChild(element('span', {'class':'card-title black-text'}, [
+				text('Quantity')
+			]));
+			ele.appendChild(element('div', {'class':'col s8 input-field'}, [
+				element('input', {'type':'text', 'placeholder':'Step'}, [])
+			]));
+			ele.appendChild(element('div', {'class':'col s4 input-field'}, [
+				element('select', {'class':'browser-default'}, steps.map(function(step){
+					return element('option', {'value':step}, [text(step)])
+				}))
+			]));
+			
+		}
+	}
+
+	var render_exercises = function(ele, data){
+		removeChildren(ele);
+		for(opt in data){
+			ele.appendChild(element('option', {'id':opt, 'value':opt}, [
+				text(opt)
+			]));
+		}
+		ele.addEventListener('change', onchange_handler(document.getElementById('step'), data));
+		//Fake event to init with whatever exercise is first
+		onchange_handler(document.getElementById('step'), data)({currentTarget:ele});
+	}
+
+	render_exercises(document.getElementById('search'), exercises);
+
+	//render_track(root_ele, track);
+</script>
+{% endblock %}

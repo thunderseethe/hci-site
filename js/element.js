@@ -16,3 +16,7 @@ function element(tag, attrs, children){
 	}
 	return ele;
 }
+
+function text(msg){
+	return document.createTextNode(msg);
+}
