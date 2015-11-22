@@ -25,7 +25,16 @@
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content">
-				<span class="card-title black-text">Weekly Goal</span>
+				<span class="card-title black-text">
+					Goal
+					<span class="badge">
+						<select class="browser-default" id="interval">
+							<option value="daily">Daily</option>
+							<option value="weekly" selected>Weekly</option>
+							<option value="monthly">Monthly</option>
+						</select>
+					</span>
+				</span>
 				<div id="chart" class="ct-square black-text"></div>
 			</div>
 		</div>
@@ -63,9 +72,9 @@
 {% block js %}
 <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 <script type="text/javascript">
-	console.log({{data|raw}});
+	var data = {{data|raw}};
 	new Chartist.Pie('#chart',
-		{{data|raw}},
+		data['weekly'],
 		{
 			donut: true,
 			//donutWidth: 20,
@@ -75,5 +84,16 @@
 			chartPadding:30,
 		}
 	);
+	$("#interval").on('change', function(event){
+		var val = $(this).val();
+		new Chartist.Pie("#chart",
+			data[val],
+			{
+				donut: true,
+				startAngle: 0,
+				total: 100,
+				chartPadding:30
+			});
+	});
 </script>
 {% endblock %}
