@@ -16,46 +16,15 @@ $state = "setup";
 if($_GET && isset($_GET['state'])){
 	$state = $_GET['state'];
 }
+
 switch($state){
-	case "main":
-		echo $twig->render('track/main.twig', array(
-			'page'=>"Track",
-			'exercise'=>array(
-				'name'=>'Boat',
-				'quant' => '10,000,000',
-				'step' => 'knots'
-			),
-			'track'=> json_encode(array(
-				'time' => 0,
-				'started' => false
-			)),
-			'back' => 'track',
-			'next' => 'track?state=post'
-		));
-	break;
-	case "post":
-		echo $twig->render('track/post.twig', array(
-			'page' => 'Track',
-			'right_nav' => array(
-				navitem("Done", "done", "index")
-			),
-			'exercise' => array(
-				'name' => 'Boat',
-				'quant' => '10,000,000',
-				'step' => 'knots',
-				'time' => '20:34 s'
-			)
-		));
-	break;
 	case "setup":
 		$exercises = array(
-			'Cycle' => array('km', 'mi', 'rot'),
-			'Fly' => array('as the crow flys'),
-			'Boat' => array('knots', 'lightyears'),
-			'Run' => array('km', 'mi'),
-			'Other Such Things' => array('such and such', 'hmmm')
+			'Run' => array('hours', 'mins', 'kcals'),
+			'Cycle' => array('hours', 'mins', 'kcals'),
+			'Fly' => array('hours', 'mins', 'kcals'),
+			'Row' => array('hours', 'mins', 'kcals')
 		);
-		ksort($exercises);
 
 		echo $twig->render('track/setup.twig', array(
 			'page' => 'Track',
@@ -66,6 +35,39 @@ switch($state){
 			'exercises' => json_encode($exercises),
 			'back' => 'index',
 			'next' => 'track?state=main'
+		));
+	break;
+	case "main":
+		echo $twig->render('track/main.twig', array(
+			'page'=>"Track",
+			/*"right_nav" => array(
+				navitem("Cancel", "close", "#modal")
+			),*/
+			'exercise'=>array(
+				'name'=>'Run',
+				'quant' => '20',
+				'step' => 'minutes'
+			),
+			'track'=> array(
+				'time' => 20*60,
+				'started' => false
+			),
+			'back' => 'track',
+			'next' => 'track?state=post'
+		));
+	break;
+	case "post":
+		echo $twig->render('track/post.twig', array(
+			'page' => 'Track',
+			'right_nav' => array(
+				navitem("Done", "done", "index")
+			),
+			'texts' => array(
+				'Total Time: 25:00 minutes',
+				'300 Calories burned',
+				'30% of daily goal completed',
+				'Leaderboard Position: 31'
+			)
 		));
 	break;
 }

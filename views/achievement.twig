@@ -1,9 +1,16 @@
 {% extends 'base.twig' %}
 
 {% block css %}
+<link href="style/flex.css" rel="stylesheet" />
 <style type="text/css">
 i.material-icons {
 	font-size:30px;
+}
+ul.collection{
+	margin:0px;
+}
+.collection li.collection-item{
+	padding: 15px;
 }
 </style>
 {% endblock %}
@@ -11,19 +18,32 @@ i.material-icons {
 {% block content %}
 <ul class="collection">
 	{% for item in achievements %}
-		<li class="collection-item row">
-			<div class="col s2">
+		<li class="collection-item row flex-row justify-center align-center progress-bar" data-progress="{{item.complete}}">
+			<div class="col s2 flex-row justify-center align-center">
 				<i class="material-icons">{{item.icon}}</i>
 			</div>
 			<div class="col s8 flow-text">
 				{{item.name}}
 			</div>
-			<div class="col s2">
-				{% if item.complete %}
+			<div class="col s2 flex-row justify-center align-center">
+				{% if item.complete == 100 %}
 					<i class="material-icons complete yellow-text darken-2">star</i>
+				{% else %}
+					{{item.complete}}%
 				{% endif %}
 			</div>
 		</li>
 	{% endfor %}
 </ul>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+$('.progress-bar').each(function(indx){
+	var progress = $(this).attr('data-progress');
+	if(progress == 0 || progress == 100) return;
+	progress = progress + "%";
+	this.style.background = "linear-gradient(to right, #a5d6a7 0%, #a5d6a7 "+progress+", white "+progress+", white 100%)";
+});
+</script>
 {% endblock %}

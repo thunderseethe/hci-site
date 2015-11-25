@@ -1,0 +1,97 @@
+{% extends 'base.twig' %}
+
+{% block css %}
+<link href="style/flex.css" rel="stylesheet" />
+<style type="text/css">
+input {
+	display: inline;
+}
+div.checkbox {
+	margin-bottom:10px;
+}
+input.browser-default[type=text] {
+	width:auto;
+	padding-left:5px;
+}
+footer.page-footer{
+	position:fixed;
+	bottom:0px;
+	width:100%;
+}
+ul.left, ul.left li, ul.left li a {
+	height:100%;
+}
+</style>
+{% endblock %}
+
+{% block left_nav %}
+<ul class="left">
+	<li><a href="setup?state={{prev}}" class="nav-item"><i class="material-icons">arrow_back</i></a></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title black-text">Synced!</span>
+				<div class="input-field checkbox">
+					<input type="checkbox" id="show_names" />
+					<label for="show_names">Show names on Leaderboard</label>
+				</div>
+				<div class="input-field checkbox">
+					<input type='checkbox' id="suggest_class" />
+					<label for="suggest_class">Suggest Class Times</label>
+				</div>
+				<div class='check-toggle hide'>
+					<div>
+						<span>Suggest</span> <input type="text" class="browser-default" size="2" id="hour"/> <span>one hour blocks of time</span>
+					</div>
+					<div class='text-toggle hide'>
+						<ul class="collection">
+							<li class="collection-item">
+								Tuesday <span class="badge">15:00 - 16:00</span>
+							</li>
+							<li class="collection-item">
+								Thursday <span class="badge">18:00 - 19:00</span>
+							</li>
+							<li class="collection-item">
+								Friday <span class="badge">9:00 - 10:00</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer class="page-footer blue">
+	<div class="container">
+		<div class="row">
+			<div class="col s6 offset-s6 flex-row justify-center align-center">
+				<a href="index" class="waves-effect waves-dark btn-flat white-text">Finish</a>
+			</div>
+		</div>	
+	</div>
+</footer>
+{% endblock %}
+
+{% block js %}
+<script type='text/javascript'>
+$("#suggest_class").on('change', function(event){
+	$('.check-toggle').toggleClass("hide");
+});
+$("#hour").on('focusout', function(event){
+	console.log($(this).val());
+	if($(this).val() != ""){
+		$('.text-toggle').removeClass("hide");
+	} else {
+		$('.text-toggle').addClass('hide');
+	}
+})
+</script>
+{% endblock %}

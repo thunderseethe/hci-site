@@ -12,10 +12,11 @@ function event($name, $time, $link){
 	);
 }
 
-function goal($name, $progress){
+function goal($name, $progress, $goal){
 	return array(
 		"name"=>$name,
-		"progress"=>($progress*100)."%"
+		"progress"=>($progress*100)."%",
+		"goal" => $goal
 	);
 }
 
@@ -41,18 +42,19 @@ echo $twig->render('index.twig', array(
     	navitem("Track", "add", "track")
     ),
 	'events' => array(
-		event("Event Here", "0:00", "#!"),
-		event("Event Here", "1:00", "#!"),
+		event("Sociology Seminar", "0:00", "#!"),
+		event("Starlit Jogging", "1:00", "#!"),
 		event("Night Time", "3:00", "#!")
 	),
 	'goals' => array(
-		goal("Cycling", 0.6),
-		goal("Goal Here", 0),
-		goal("Goal Here", 1),
+		goal("Hours", 0.6, 10000),
+		goal("Calories", 0, 2000),
+		goal("Workouts", 1, "Done"),
 	),
 	'actions' => array(
 		action('Update BMI', '#!'),
 		action('Lose Weight', '#!'),
 		action('Discover Happiness', '#!')
-	)
+	),
+	'class_of_week' => "Zoomba Roomba"
 ));

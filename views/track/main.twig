@@ -17,31 +17,24 @@ ul.left, ul.left li, ul.left li a {
 
 {% block left_nav %}
 <ul class="left">
-	<li><a href="{{back}}" class="nav-item"><i class="material-icons">arrow_back</i></a></li>
+	<li><a href="#modal" class="nav-item" id="back_btn"><i class="material-icons">arrow_back</i></a></li>
+</ul>
+{% endblock %}
+
+{% block right_nav %}
+<ul class="right">
+	<li><a href="#modal" class="nav-item" id="cancel_btn"><i class="material-icons left">close</i><span>Cancel</span></a></li>
 </ul>
 {% endblock %}
 
 {% block content %}
 <div class="row">
-	{# <div class="col s12">
-		<div class="card">
-			<div class="card-content">
-				<div class="input-field">
-					<label for=""></label>
-					<select id="search" class="browser-default">
-					</select>
-				</div>
-			</div>
-		</div>
-	</div> #}
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content">
-				<span class="card-title black-text">Exercise</span>
-				<div class="row">
-					<div class="col s4 center">{{exercise.name}}</div>
-					<div class="col s4 center">{{exercise.quant}}</div>
-					<div class="col s4 center">{{exercise.step}}</div>
+				<span class="card-title black-text">Exercise: {{exercise.name}}</span>
+				<div id="time" class="flex-row justify-center align-center">
+					{{ "%d:%02d s"|format(track.time // 60, track.time % 60)}}
 				</div>
 			</div>
 		</div>
@@ -50,10 +43,6 @@ ul.left, ul.left li, ul.left li a {
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content" id="tracker">
-				<div id="time" class="flex-row justify-center align-center">
-					0:00 s
-				</div>
-
 				<!-- flex-row justify-center align-center -->
 				<div id="toggle" class="row">
 					<button id="go_btn" class="col s12 waves-effect waves-light btn-large green lighten-1">
@@ -64,14 +53,23 @@ ul.left, ul.left li, ul.left li a {
 			</div>
 		</div>
 	</div>
+
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<img src="img/map.png" id="map" />
+			</div>
+		</div>
+	</div>
 </div>
 <div id="modal" class="modal">
 	<div class="modal-content">
-		<h4>Modal Header</h4>
-		<p>A bunch of text</p>
+		<h4>Are you sure?</h4>
+		<p>Exiting now will lose all progress tracked so far.</p>
 	</div>
 	<div class="modal-footer">
-		<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+		<a id="modal_ok" href="#!" class=" modal-action waves-effect waves-dark btn-flat">Ok</a>
+		<a href="#!" class="modal-action modal-close waves-effect waves-dark btn-flat btn-flat">Close</a>
 	</div>
 </div>
 {% endblock %}
@@ -80,16 +78,16 @@ ul.left, ul.left li, ul.left li a {
 <script type="text/javascript" src="js/element.js"></script>
 <script type="text/javascript">
 	var root_ele = document.getElementById("tracker");
-	var track = {{track|raw}};
+	var track = {{track|json_encode|raw}};
 	var timer_handle;
 
 	var timer_callback = function(){
-		track.time += 1;
+		track.time -= 1;
 		render_time(document.getElementById('time'), track.time);
 		timer_handle = window.setTimeout(timer_callback, 1000);
 	}
 
-	function padLeftZeroes(nr, n){
+	var padLeftZeroes = function(nr, n){
 		return Array(n-String(nr).length+1).join('0')+nr;
 	}
 
@@ -144,5 +142,16 @@ ul.left, ul.left li, ul.left li a {
 		render(track);
 	});
 	
+	$("#map").width($("#map").parent().width());
+
+	$("#back_btn").on('click', function(event){
+		console.log("back clicked");
+		$("#modal_ok").attr("href", "{{back}}");
+	});
+	$("#cancel_btn").on('click', function(event){
+		console.log("cancel clicked");
+		$("#modal_ok").attr("href", "index");
+	});
+	$(".nav-item").leanModal();
 </script>
 {% endblock %}

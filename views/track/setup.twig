@@ -46,7 +46,7 @@ ul.left, ul.left li, ul.left li a {
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content row" id="next-wrapper">
-				<a href="{{next}}" class="col s12 waves-effect waves-light btn-large green lighten-1 white-text">
+				<a href="{{next}}" id="next" class="col s12 waves-effect waves-light btn-large disabled green lighten-1 white-text">
 					Next
 					<i class="material-icons right">play_arrow</i>
 				</a>
@@ -54,15 +54,6 @@ ul.left, ul.left li, ul.left li a {
 		</div>
 	</div>
 </form>
-<!--<div id="modal" class="modal">
-	<div class="modal-content">
-		<h4>Modal Header</h4>
-		<p>A bunch of text</p>
-	</div>
-	<div class="modal-footer">
-		<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-	</div>
-</div>-->
 {% endblock %}
 
 {% block js %}
@@ -70,53 +61,6 @@ ul.left, ul.left li, ul.left li a {
 <script type="text/javascript">
 	var root_ele = document.getElementById("tracker");
 	var exercises = {{exercises|raw}};
-	//var track = {{track|raw}};
-	//var timer_handle;
-
-	/*var timer_callback = function(){
-		track.time += 1;
-		render_track(root_ele, track);
-		timer_handle = window.setTimeout(timer_callback, 1000);
-	}
-
-	function padLeftZeroes(nr, n){
-		return Array(n-String(nr).length+1).join('0')+nr;
-	}	
-
-	var render_track = function(tracker, data){
-		//remove all children
-		while(tracker.firstChild){
-			tracker.removeChild(tracker.firstChild);
-		}
-
-		tracker.appendChild(element('div', {'class':'col s12 flex-row justify-center align-center time'}, [
-			text(Math.floor(data.time / 60) + ":" + padLeftZeroes(data.time % 60, 2) + " s")
-		]));
-		tracker.appendChild(element('div', {'class':'col s12 flex-row justify-center align-center toggle'}, [
-			data.started ? 
-				element('button', {'id':'stop_btn', 'class':'waves-effect waves-light btn-large red'}, [
-					element('i', {'class':'material-icons right'}, [text("stop")]),
-					text("Stop")
-				])
-			:
-				element('button', {'id':'go_btn', 'class':'waves-effect waves-light btn-large green'}, [
-					element('i', {'class':'material-icons right'}, [text("play_arrow")]),
-					text("Go")
-				])
-		]));
-
-		$("#stop_btn").on('click', function(event){
-			if(timer_handle)
-				window.clearTimeout(timer_handle);
-			data.started = false;
-			render_track(root_ele, data);
-		});
-		$("#go_btn").on('click', function(event){
-			timer_handle = window.setTimeout(timer_callback, 1000);
-			data.started = true;
-			render_track(root_ele, data);
-		});
-	}*/
 
 	var removeChildren = function(ele){
 		while(ele.firstChild){
@@ -132,14 +76,20 @@ ul.left, ul.left li, ul.left li a {
 				text('Quantity')
 			]));
 			ele.appendChild(element('div', {'class':'col s8 input-field'}, [
-				element('input', {'type':'text', 'placeholder':'Step'}, [])
+				element('input', {'type':'text', 'placeholder':'Step', 'id':'step_text'}, [])
 			]));
 			ele.appendChild(element('div', {'class':'col s4 input-field'}, [
 				element('select', {'class':'browser-default'}, steps.map(function(step){
 					return element('option', {'value':step}, [text(step)])
 				}))
 			]));
-			
+			document.getElementById('step_text').addEventListener('change', function(event){
+				console.log(this)
+				if($(this).val() == "" && !$("#next").hasClass('disabled'))
+					$("#next").addClass('disabled');
+				if($(this).val() != "" && $("#next").hasClass("disabled"))
+					$("#next").removeClass("disabled");
+			});
 		}
 	}
 
@@ -156,7 +106,5 @@ ul.left, ul.left li, ul.left li a {
 	}
 
 	render_exercises(document.getElementById('search'), exercises);
-
-	//render_track(root_ele, track);
 </script>
 {% endblock %}

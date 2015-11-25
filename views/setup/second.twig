@@ -1,18 +1,20 @@
 {% extends 'base.twig' %}
 
+
 {% block css %}
+<link href="style/flex.css" rel="stylesheet" />
 <style type="text/css">
-.center {
-	text-align: center;
+label.large-font {
+	font-size:2rem;
 }
-.container .row div {
-	margin-top:5px;
+footer.page-footer{
+	position: fixed;
+	bottom: 0px;
+	width:100%;
+	z-index:5;
 }
-.container .row div.skip {
-	margin-top:25px;
-}
-div.flow-text {
-	margin-bottom:10px;
+main{
+	padding-bottom:70px;
 }
 ul.left, ul.left li, ul.left li a {
 	height:100%;
@@ -22,7 +24,7 @@ ul.left, ul.left li, ul.left li a {
 
 {% block left_nav %}
 <ul class="left">
-	<li><a href="setup?state=first" class="nav-item"><i class="material-icons">arrow_back</i></a></li>
+	<li><a href="setup?state={{prev}}" class="nav-item"><i class="material-icons">arrow_back</i></a></li>
 </ul>
 {% endblock %}
 
@@ -31,32 +33,164 @@ ul.left, ul.left li, ul.left li a {
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content">
-				<span class="card-title black-text">Timetable</span>
-				<div class="flow-text">
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu sapien justo. Duis viverra eros eu gravida mollis. Phasellus non mollis felis. Quisque vitae suscipit arcu. Curabitur sit amet faucibus felis, nec faucibus purus. Etiam vestibulum tortor nec accumsan ullamcorper. Integer tristique tellus ac malesuada bibendum. Quisque vestibulum nec erat quis accumsan. Phasellus nec risus diam. Donec hendrerit hendrerit leo vitae porttitor.
+				<span class="card-title black-text">Goals</span>
+				<div id="goals">
+					<input id="quant" type="text" class="col s4" placeholder="Quantity" />
+					<select class="browser-default col s4">
+						<option value="hour">Hours</option>
+						<option value="minute">Minutes</option>
+						<option value="calorie">Calories</option>
+						<option value="workout">Workouts</option>
+					</select>
+					<select class="browser-default col s3">
+						<option value="daily">Daily</option>
+						<option value="weekly">Weekly</option>
+						<option value="monthly">Monthly</option>
+					</select>
+					<a href="#!" class="delete col s1 flex-row justify-center align-center black-text" data-row="0"><i class="material-icons">close</i></a>
 				</div>
-				<div class="container">
-					<div class="row">
-						<div class="col s12 center">
-							<a href="setup?state=third" class="waves-effect waves-light btn-large light-blue darken-1 white-text">
-								Link with Sussex Account
-							</a>
-						</div>
-						<div class="col s12 center">
-							<a href="setup?state=third" class="waves-effect waves-light btn-large orange lighten-1 white-text">
-								Link with Google Account
-							</a>
-						</div>
-
-						<div class="col s12 center skip">
-							<a href="index" class="waves-effect waves-light btn-large red lighten-1">
-								No thanks
-							</a>
-						</div>
-					</div>
+				<div class="card-action">
+					<a href="#!" class="black-text" id="new-goal"><i class="material-icons">add</i></a>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title black-text">Info</span>
+				<div class="row">
+					<h4 class="col s3">Height:</h4>
+					<input id="height" type="text" class="col s5 offset-s1" value={{state.info.height}} />
+					<select class="browser-default col s2 offset-s1">
+						<option value="in">in</option>
+						<option value="cm">cm</option>
+					</select>
+				</div>
+				<div class="row">
+					<h4 class="col s3">Weight:</h4>
+					<input id="weight" type="text" class="col s5 offset-s1" value={{state.info.weight}} />
+					<select class="browser-default col s2 offset-s1">
+						<option value="ilbs">Ilbs</option>
+						<option value="kg">kg</option>
+					</select>
+				</div>
+				<div>
+					<input type="checkbox" id="track" />
+					<label for="track" class="black-text large-font">Track BMI</label>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content" id="pair">
+				<span class="card-title black-text">Smart Device</span>
+				<button class="waves-effect waves-light btn">Pair</button>
+			</div>
+		</div>
+	</div>
 </div>
+{% endblock %}
+
+{% block footer %}
+<footer class='page-footer blue'>
+	<div class="container">
+		<div class="row">
+			<div class="col s6 flex-row justify-center align-center">
+				<a href="index" class="waves-effect waves-dark btn-flat white-text">Skip</a>
+			</div>
+			<div class="col s6 flex-row justify-center align-center">
+				<a href="setup?state={{next}}" id="next" class="waves-effect waves-dark btn-flat white-text disabled">Next</a>
+			</div>
+		</div>
+	</div>
+</footer>
+{% endblock %}
+
+{% block js %}
+<script src="js/element.js"></script>
+<script type="text/javascript">
+var state = {{state|json_encode|raw}};
+var option = function(val, txt){
+	return element('option', {'value':val}, [text(txt)]);
+}
+
+var render_goals = function(target, goals){
+	while(target.firstChild) target.removeChild(target.firstChild);
+	for(var i = 0; i < goals.length; i+=1){
+		target.appendChild(element("div", {'class':'row'}, [
+			element('input', {'type':'text', 'class':'col s4', 'placeholder':'Quantity', 'value':goals[i]}, []),
+			element('select', {'class':'browser-default col s4'}, [
+				option('hour', 'Hours'),
+				option('minute', 'Minutes'),
+				option('calorie', 'Calories'),
+				option('workout', 'Workouts')
+			]),
+			element('select', {'class':'browser-default col s3'}, [
+				option('daily', "Daily"),
+				option('weekly', 'Weekly'),
+				option('monthly', "Monthly")
+			]),
+			element('a', {'href':'#!', 'class':'delete col s1 flex-row justify-center align-center black-text', 'data-row':i}, [
+				element('i', {'class':'material-icons'}, [text('close')])
+			])
+		]));
+	}
+	$('.delete').on('click', function(event){
+		var row = $(event.currentTarget).attr("data-row");
+		state.goals = state.goals.filter(function(ele, indx){
+			return indx != row;
+		});
+		render(state);
+	});
+}
+
+var render_pair = function(target, paired){
+	while(target.firstChild) target.removeChild(target.firstChild);
+	target.appendChild(element('span', {'class':'card-title black-text'}, [
+		text("Smart Device: "),
+		paired ? 
+			element('span', {'class':'green-text'}, [text("Paired")])
+		: 
+			element('span', {'class':'red-text'}, [text("Not Paired")])
+	]));
+	target.appendChild(element('div', {}, [
+		paired ?
+			element('button', {'class':'waves-effect waves-light btn-large red lighten-1'}, [text("Unpair")])
+		:
+			element('button', {'class':'waves-effect waves-light btn-large green lighten-1'}, [text("Pair")])
+	]));
+	$("#pair button").on('click', function(event){
+		state.paired = !state.paired;
+		console.log(state.paired);
+		render(state);
+	})
+}
+
+var render = function(state){
+	console.log(state);
+	render_goals(document.getElementById("goals"), state.goals);
+	render_pair(document.getElementById("pair"), state.paired);
+
+}
+
+var focusout_handler = function(event){
+	//console.log($("#weight").val() == "", $("#height").val() == "", $(""))
+	if($("#weight").val() != "" && $("#height").val() != "" && !$("#next").hasClass('white-text'))
+		$("#next").addClass("white-text");
+	if(($("#weight").val() == "" || $("#height").val() == "") && $("#next").hasClass("white-text"))
+		$("#next").removeClass("white-text");
+}
+$("#weight").on('focusout', focusout_handler);
+$("#height").on('focusout', focusout_handler);
+
+render(state);
+$("#new-goal").on('click', function(event){
+	state.goals.push("");
+	render(state);
+});
+</script>
 {% endblock %}

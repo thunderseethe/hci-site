@@ -30,7 +30,7 @@
 	<body class="grey lighten-4">
 		<header>
 			<div class="navbar-fixed">
-				<nav>
+				<nav class="blue">
 					<div class="nav-wrapper">
 						{% block left_nav %}
 							<a href="#" data-activates="nav-mobile" class="button-collapse">
@@ -46,20 +46,22 @@
 							</ul>
 						{% endblock %}
 						<h2 class="brand-logo center">{{page|default("Page Name")}}</h2>
-						{% if right_nav %}
-						<ul class="right">
-							{% for item in right_nav %}
-							<li>
-								<a href="{{item.link}}" class="nav-item">
-									{% if not item.icon is empty %}
-									<i class="material-icons left">{{item.icon}}</i>
-									{% endif %}
-									<span>{{item.text}}</span>
-								</a>
-							</li>
-							{% endfor %}
-						</ul>
-						{% endif %}
+						{% block right_nav %}
+							{% if right_nav %}
+							<ul class="right">
+								{% for item in right_nav %}
+								<li>
+									<a href="{{item.link}}" class="nav-item">
+										{% if not item.icon is empty %}
+										<i class="material-icons left">{{item.icon}}</i>
+										{% endif %}
+										<span>{{item.text}}</span>
+									</a>
+								</li>
+								{% endfor %}
+							</ul>
+							{% endif %}
+						{% endblock %}
 					</div>
 				</nav>
 			</div>

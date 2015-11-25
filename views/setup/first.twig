@@ -22,6 +22,17 @@ footer.page-footer{
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content">
+				<span class="card-title black-text">Welcome!</span>
+				<img src="img/welcome.jpg" id="image" />
+				<p>
+					Bacon ipsum dolor amet boudin t-bone turkey bresaola swine. Capicola tail shankle, sirloin corned beef turducken ribeye andouille cow pastrami sausage hamburger prosciutto kielbasa short loin. Beef ribs frankfurter fatback, short loin capicola tenderloin ribeye brisket ground round swine turducken corned beef picanha. Leberkas capicola pork, tenderloin porchetta tri-tip turducken pastrami kevin. Biltong ham hock pork chop, strip steak ball tip porchetta frankfurter bresaola pastrami andouille. Boudin jerky short loin flank hamburger kevin. Ball tip hamburger flank, pastrami meatball rump leberkas.
+				</p>
+			</div>
+		</div>
+	</div>
+	{#<div class="col s12">
+		<div class="card">
+			<div class="card-content">
 				<span class="card-title black-text">Goals</span>
 				<div id="goals">
 					<input type="text" class="col s4" placeholder="Quantity" />
@@ -80,19 +91,19 @@ footer.page-footer{
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>#}
 </div>
 {% endblock %}
 
 {% block footer %}
-<footer class='page-footer'>
+<footer class='page-footer blue'>
 	<div class="container">
 		<div class="row">
-			<div class="col s6">
-				<a href="index" class="waves-effect waves-dark btn-flat">Skip</a>
+			<div class="col s6 flex-row justify-center align-center">
+				<a href="index" class="waves-effect waves-dark btn-flat white-text">Skip</a>
 			</div>
-			<div class="col s6">
-				<a href="setup?state=second" class="waves-effect waves-dark btn-flat">Next</a>
+			<div class="col s6 flex-row justify-center align-center">
+				<a href="setup?state={{next}}" class="waves-effect waves-dark btn-flat white-text">Next</a>
 			</div>
 		</div>
 	</div>
@@ -102,73 +113,6 @@ footer.page-footer{
 {% block js %}
 <script src="js/element.js"></script>
 <script type="text/javascript">
-var state = {{state|json_encode|raw}};
-var option = function(val, txt){
-	return element('option', {'value':val}, [text(txt)]);
-}
-
-var render_goals = function(target, goals){
-	while(target.firstChild) target.removeChild(target.firstChild);
-	for(var i = 0; i < goals.length; i+=1){
-		target.appendChild(element("div", {'class':'row'}, [
-			element('input', {'type':'text', 'class':'col s4', 'placeholder':'Quantity', 'value':goals[i]}, []),
-			element('select', {'class':'browser-default col s4'}, [
-				option('hour', 'Hours'),
-				option('minute', 'Minutes'),
-				option('calorie', 'Calories'),
-				option('workout', 'Workouts')
-			]),
-			element('select', {'class':'browser-default col s3'}, [
-				option('daily', "Daily"),
-				option('weekly', 'Weekly'),
-				option('monthly', "Monthly")
-			]),
-			element('a', {'href':'#!', 'class':'delete col s1 flex-row justify-center align-center black-text', 'data-row':i}, [
-				element('i', {'class':'material-icons'}, [text('close')])
-			])
-		]));
-	}
-	$('.delete').on('click', function(event){
-		var row = $(event.currentTarget).attr("data-row");
-		state.goals = state.goals.filter(function(ele, indx){
-			return indx != row;
-		});
-		render(state);
-	});
-}
-
-var render_pair = function(target, paired){
-	while(target.firstChild) target.removeChild(target.firstChild);
-	target.appendChild(element('span', {'class':'card-title black-text'}, [
-		text("Smart Device: "),
-		paired ? 
-			element('span', {'class':'green-text'}, [text("Paired")])
-		: 
-			element('span', {'class':'red-text'}, [text("Not Paired")])
-	]));
-	target.appendChild(element('div', {}, [
-		paired ?
-			element('button', {'class':'waves-effect waves-light btn-large red lighten-1'}, [text("Unpair")])
-		:
-			element('button', {'class':'waves-effect waves-light btn-large green lighten-1'}, [text("Pair")])
-	]));
-	$("#pair button").on('click', function(event){
-		state.paired = !state.paired;
-		console.log(state.paired);
-		render(state);
-	})
-}
-
-var render = function(state){
-	console.log(state);
-	render_goals(document.getElementById("goals"), state.goals);
-	render_pair(document.getElementById("pair"), state.paired);
-}
-
-render(state);
-$("#new-goal").on('click', function(event){
-	state.goals.push("");
-	render(state);
-});
+$("#image").width($("#image").parent().width());
 </script>
 {% endblock %}
