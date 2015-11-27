@@ -37,7 +37,7 @@ ul.left, ul.left li, ul.left li a {
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content row" id="step">
-				<span class="card-title black-text">Quantity</span>
+				<span class="card-title black-text">Target</span>
 				<div class="input-field col s12">
 				</div>
 			</div>
@@ -73,7 +73,7 @@ ul.left, ul.left li, ul.left li a {
 			var steps = data[event.currentTarget.value];
 			removeChildren(ele);
 			ele.appendChild(element('span', {'class':'card-title black-text'}, [
-				text('Quantity')
+				text('Target')
 			]));
 			ele.appendChild(element('div', {'class':'col s8 input-field'}, [
 				element('input', {'type':'text', 'placeholder':'Step', 'id':'step_text'}, [])

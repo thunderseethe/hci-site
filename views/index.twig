@@ -35,7 +35,7 @@
 				<ul class="collection">
 					{% for goal in goals %}
 						<li class="black-text collection-item progress-bar" data-progress="{{goal.progress}}">
-							{{goal.name}}<span class="badge">{#{{(goal.progress == "100%") ? "Done" : goal.progress}}#}{{goal.goal}}</span>
+							{{goal.name}} <span class="badge">{{goal.goal}}</span>
 						</li>
 					{% endfor %}
 				</ul>	

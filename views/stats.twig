@@ -1,7 +1,8 @@
 {% extends 'base.twig' %}
 
 {% block css %}
-<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+<link rel="stylesheet" href="style/chartist.min.css">
+<link rel="stylesheet" href="style/flex.css">
 <style type="text/css">
 	#chart {
 		width: 100%;
@@ -16,6 +17,27 @@
 	}
 	.collection {
 		border:none;
+	}
+	.collection-item svg {
+		margin-right: 5px;
+	}
+	.ct-series-a .ct-slice-pie {
+		fill: #f44336;
+	}
+	.ct-series-b .ct-slice-pie {
+		fill: #2196f3;
+	}
+	.ct-series-c .ct-slice-pie {
+		fill: #4caf50;
+	}
+	.ct-series-d .ct-slice-pie {
+		fill: #ff9800;
+	}
+	.ct-series-e .ct-slice-pie {
+		fill: #9c27b0;
+	}
+	.ct-series-f .ct-slice-pie {
+		fill: #795548;
 	}
 </style>
 {% endblock %}
@@ -36,10 +58,73 @@
 					</span>
 				</span>
 				<div id="chart" class="ct-square black-text"></div>
-				<div>Total time: <span id="time">{{data.weekly.time}}</span> hours</div>
+				<ul id="breakdown">
+					<li class="collection-item flex-row justify-between align-center">
+						<span class="flex-row justify-start align-center">
+							<svg width="20" height="20" class="ct-series-a">
+								<rect class="ct-slice-pie" x="0" y="0" width="50" height="50" />
+							</svg>
+							Cycling
+						</span>
+						<span>{{(data.weekly.series[0] / 100) * data.weekly.time}}</span>
+					</li>
+					<li class="collection-item flex-row justify-between align-center">
+						<span class="flex-row justify-start align-center">
+							<svg width="20" height="20" class="ct-series-b">
+								<rect class="ct-slice-pie" x="0" y="0" width="50" height="50" />
+							</svg>
+							Boomerang-ing
+						</span>
+						<span>{{(data.weekly.series[1] / 100) * data.weekly.time}}</span>
+					</li>
+					<li class="collection-item flex-row justify-between align-center">
+						<span class="flex-row justify-start align-center">
+							<svg width="20" height="20" class="ct-series-c">
+								<rect class="ct-slice-pie" x="0" y="0" width="50" height="50" />
+							</svg>
+							Running
+						</span>
+						<span>{{(data.weekly.series[2] / 100) * data.weekly.time}}</span>
+					</li>
+					<li class="collection-item flex-row justify-between align-center">
+						<span class="flex-row justify-start align-center">
+							<svg width="20" height="20" class="ct-series-d">
+								<rect class="ct-slice-pie" x="0" y="0" width="50" height="50" />
+							</svg>
+							Rodeo
+						</span>
+						<span>{{(data.weekly.series[3] / 100) * data.weekly.time}}</span>
+					</li>
+					<li class="collection-item flex-row justify-between align-center">
+						<span class="flex-row justify-start align-center">
+							<svg width="20" height="20" class="ct-series-e">
+								<rect class="ct-slice-pie" x="0" y="0" width="50" height="50" />
+							</svg>
+							Light Jogging
+						</span>
+						<span>{{(data.weekly.series[4] / 100) * data.weekly.time}}</span>
+					</li>
+					<li class="collection-item flex-row justify-between align-center">Total time: <span id="time">{{data.weekly.time}}</span></li>
+				</ul>
 			</div>
 		</div>
 	</div>
+
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title black-text">Goals</span>
+				<ul class="collection">
+					{% for goal in goals %}
+						<li class="black-text collection-item progress-bar" data-progress="{{goal.progress}}">
+							{{goal.name}} <span class="badge">{{goal.goal}}</span>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	</div>
+
 
 	<div class="col s12">
 		<div class="card">
@@ -71,32 +156,57 @@
 {% endblock %}
 
 {% block js %}
-<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+<script src="js/chartist.min.js"></script>
+<script src="js/element.js"></script>
 <script type="text/javascript">
 	var data = {{data|json_encode|raw}};
+	var sum = function(a, b){ return a + b; }
+	var nextChar = function(c){
+		return String.fromCharCode(c.charCodeAt(0) + 1);
+	}
+	var chartOpt = {
+		startAngle: 0,
+		total: 100,
+		chartPadding: 70,
+		showLabel: false
+	}
+	
 	new Chartist.Pie('#chart',
 		data['weekly'],
-		{
-			//donut: true,
-			//donutWidth: 20,
-			startAngle: 0,
-			total: 100,
-			//width: $("#chart").width(),
-			chartPadding:30,
-		}
+		chartOpt
 	);
 	$("#interval").on('change', function(event){
 		var val = $(this).val();
 		new Chartist.Pie("#chart",
 			data[val],
-			{
-				//donut: true,
-				startAngle: 0,
-				total: 100,
-				chartPadding:30
-			}
+			chartOpt
 		);
 		$('#time').html(data[val].time);
+		var list = document.getElementById('breakdown');
+		while(list.firstChild) list.removeChild(list.firstChild);
+		var letter = 'a';
+		for(var i = 0; i < data[val].series.length; i += 1){
+			var hours = (data[val].series[i] / 100) * data[val].time;
+			hours = Math.round(hours * 100) / 100;
+			list.appendChild(element('li', {'class':'collection-item flex-row justify-between align-center'}, [
+				element('span', {'class':'flex-row justify-start align-center'}, [
+					svg("svg", {'class':'ct-series-'+letter, 'height':20, 'width':20}, [
+						svg('rect', {'class':'ct-slice-pie', 'x':0, 'y':0, 'width':50, 'height':50})
+					]),
+					text(data[val].labels[i])
+				]),
+				element('span', {}, [text(hours)])
+			]));
+			letter = nextChar(letter);
+		}
+		list.appendChild(element('li', {'class':'flex-row justify-between align-center'}, [
+			text('Total Time:'),
+			element('span', {'id':'time'}, [text(data[val].time)])
+		]));
+	});
+	$('.progress-bar').each(function(indx){
+		var progress = $(this).attr('data-progress');	
+		this.style.background = "linear-gradient(to right, #a5d6a7 0%, #a5d6a7 "+progress+", transparent "+progress+", transparent 100%)";
 	});
 </script>
 {% endblock %}

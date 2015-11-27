@@ -9,6 +9,13 @@ $twig = twig();
 		array('Running', 30),
 		array('Uncomplete', 50)
 	)));*/
+function goal($name, $progress, $goal){
+	return array(
+		"name"=>$name,
+		"progress"=>($progress*100)."%",
+		"goal" => $goal
+	);
+}
 
 echo $twig->render('stats.twig', array(
 	'page' => "Statistics",
@@ -24,10 +31,15 @@ echo $twig->render('stats.twig', array(
 			"time" => 20
 		),
 		"monthly" => array(
-			"labels" => array("Rodeo", "Light Jogging", "Cycling", "Boomerang-ing", "Running", "Kickboxing"),
+			"labels" => array("Rodeo", "Light Jogging", "Cycling", "Boomerang-ing", "Running", "Other"),
 			"series" => array(20, 15, 30, 10, 20, 5),
 			"time" => 150
 		)
+	),
+	"goals" => array(
+		goal("Hours", 0.6, 10000),
+		goal("Calories", 0, 2000),
+		goal("Workouts", 1, "Done"),
 	),
 	"bmi" => 22.5,
 	"rating" => array(true, true, true, true, false),

@@ -1,0 +1,35 @@
+{% extends 'base.twig' %}
+
+{% block css %}
+<style type="text/css">
+.card .collection {
+	padding:0px;
+	margin:0px;
+	border: none;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<p class="flow-text">
+					Please choose from the list below and we'll give you step-by-step instructions on what to do. If your problem's not listed, contact us and we'll sort it.
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content collection">
+				{% for link in links %}
+				<a href="{{link.link}}" class="collection-item">{{link.text}}</a>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

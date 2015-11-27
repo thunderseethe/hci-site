@@ -1,50 +1,23 @@
-Main Page
-	Class of the week
-	Change todos? to notifications
-	Order: Goals, Class of the Week, Upcoming, Notifications
+Track (1)
+	Add miles, kms to quantity dropdown
+	Change quantity to goal, target, something like that
 
-Track Page (First)
-	Change content
-	Disable next button until mandatory fields filled out
 
-Track Page (Second)
-	Assume exercise being tracked is a run
-	Move time to the top
-	Add fake map
-	Confirmation on back is timer is running
-	Add cancel button to main page
+Track (3)
+	Add something about beat your record
 
-Track Page (Third)
-	Rewrite text
-	Stylize
-
-Timetable Page
-	Replace around town section with 
-		gym timetable button (external link)
-		my timetable button (external link)
-	Add one more day to show next/prev buttons
-	New section with "Schedule Activity" button
-
-Stats Page
-	Add time total below graph
-	Change goal to "Exercise Breakdown"
-
-Setup Page (First)
-	Add new page with image and some gay shit about feelings
-
-Setup Page (First -> Second)
-	Move smart device to the bottom
-	Deactivate next if mandatory fields aren't filled out
-
-Setup Page (Second -> Third)
-	Change google color to google red
-	Find new color for no thanks button
-
-Setup Page (Third -> Fourth)
-	Fix wording for Suggest _ hour blocks of time
-
-Achievements Page
-	Percentage of completion
+Setup Page (4)
+	Change "Class" to "Exercise"
 
 Settings Page
-	Change wording "Connect" to "Pair"
+	Change "Not Pair" to "Not Paired"
+
+Stats Page
+	Take the goals from the main page, and put them in the statistics page, just put them there
+	You need to have a section below the pie indicating how much the top 5 activities were
+	Add a legend to the graph
+
+Timetable Page
+	Bold timetable event names
+
+Add help page

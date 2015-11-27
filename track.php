@@ -20,10 +20,10 @@ if($_GET && isset($_GET['state'])){
 switch($state){
 	case "setup":
 		$exercises = array(
-			'Run' => array('hours', 'mins', 'kcals'),
-			'Cycle' => array('hours', 'mins', 'kcals'),
-			'Fly' => array('hours', 'mins', 'kcals'),
-			'Row' => array('hours', 'mins', 'kcals')
+			'Run' => array('hours', 'mins', 'kcals', 'kms', 'miles'),
+			'Cycle' => array('hours', 'mins', 'kcals', 'kms', 'miles'),
+			'Fly' => array('hours', 'mins', 'kcals', 'kms', 'miles'),
+			'Row' => array('hours', 'mins', 'kcals', 'kms', 'miles')
 		);
 
 		echo $twig->render('track/setup.twig', array(
@@ -66,7 +66,8 @@ switch($state){
 				'Total Time: 25:00 minutes',
 				'300 Calories burned',
 				'30% of daily goal completed',
-				'Leaderboard Position: 31'
+				'Leaderboard Position: 31',
+				"You beat your best record!"
 			)
 		));
 	break;
